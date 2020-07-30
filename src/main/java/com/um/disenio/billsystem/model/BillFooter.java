@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class BillFooter {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long idFooter;
 
     @MapsId
