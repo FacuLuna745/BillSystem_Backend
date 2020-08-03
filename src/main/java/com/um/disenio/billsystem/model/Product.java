@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 
 @Setter
 @Getter
@@ -26,6 +27,6 @@ public class Product {
     private ProductCategory productCategory;
 
     @NotEmpty
-    private Integer price;
+    private BigDecimal price;
 
 }

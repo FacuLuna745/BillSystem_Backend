@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,27 +12,28 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 @Table(name = "bills_headers")
-public class BillHeader {
+public class BillHeader implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Date date;
 
-    @Enumerated(EnumType.ORDINAL)
-    private TypeBill typeBill;
-
     @OneToOne
     private Client client;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "bill_header")
-    private List<BillBody> billBodies;
+    @Enumerated(EnumType.ORDINAL)
+    private TypeBill typeBill;
 
+
+    @OneToMany(mappedBy = "billHeader")
+    @JsonIgnore
+    private List<BillBody> billBodies;
 }
 

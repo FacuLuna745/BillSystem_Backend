@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public interface ServiceBillApi {
     ResponseEntity<Bill> createBill(BillHeader billHeader , List<BillBody> billBody , BillFooter billFooter);
-    ResponseEntity<Bill> getBillById(Long Id);
-    ResponseEntity<String> deleteBillById(Long id);
     List<Bill> getAll();
+
 }

@@ -21,6 +21,7 @@ public class ProductRestController {
     public List<Product> getAll(){
         return serviceProductApi.getAll();
     }
+
     @GetMapping(value = "/select/{id}")
     public Product getById(@PathVariable Long id){
         return serviceProductApi.get(id);
@@ -30,6 +31,7 @@ public class ProductRestController {
         Product obj = serviceProductApi.save(product);
         return new ResponseEntity<Product>(obj, HttpStatus.OK);
     }
+
     @GetMapping(value = "/delete/{id}")
     public ResponseEntity<Product> delete(@PathVariable Long id){
         Product product = serviceProductApi.get(id);

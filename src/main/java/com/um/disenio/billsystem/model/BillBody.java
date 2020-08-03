@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Setter
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "bills_bodys")
-public class BillBody {
+public class BillBody implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,8 +26,7 @@ public class BillBody {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "bill_header_id")
-    @JsonIgnore
+    @JoinColumn(name = "billHeader_id")
     private BillHeader billHeader;
     private BigDecimal quantity;
     private BigDecimal subTotal;
