@@ -28,8 +28,7 @@ public class ProductRestController {
     }
     @PostMapping(value = "/save")
     public ResponseEntity<Product> save(@RequestBody Product product){
-        Product obj = serviceProductApi.save(product);
-        return new ResponseEntity<Product>(obj, HttpStatus.OK);
+        return serviceProductApi.save(product);
     }
 
     @GetMapping(value = "/delete/{id}")

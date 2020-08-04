@@ -8,16 +8,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/v1/client")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(value = "api/")
 public class ClientRestController {
 
     @Autowired
     private ServiceClientApi serviceClientApi;
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "clients/all")
     public List<Client> getAll() {
         return serviceClientApi.getAll();
     }
@@ -27,10 +29,9 @@ public class ClientRestController {
         return serviceClientApi.get(id);
     }
 
-    @PostMapping(value = "/save")
-    public ResponseEntity<Client> save(@RequestBody Client client){
-        Client obj = serviceClientApi.save(client);
-        return new ResponseEntity<Client>(obj, HttpStatus.OK);
+    @PostMapping(value = "/create_client")
+    public ResponseEntity<Client> addClient(@Valid  @RequestBody Client client){
+       return serviceClientApi.save(client);
     }
 
     @GetMapping(value = "/delete/{id}")

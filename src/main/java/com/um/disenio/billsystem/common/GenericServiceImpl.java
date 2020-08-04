@@ -1,6 +1,8 @@
 package com.um.disenio.billsystem.common;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -11,8 +13,9 @@ import java.util.Optional;
 @Service
 public abstract class GenericServiceImpl <T, ID extends Serializable> implements GenericServiceApi<T,ID> {
     @Override
-    public T save(T entity) {
-        return getRepository().save(entity);
+    public ResponseEntity<T> save(T entity) {
+        getRepository().save(entity);
+        return new ResponseEntity<>(entity, HttpStatus.CREATED);
     }
 
     @Override

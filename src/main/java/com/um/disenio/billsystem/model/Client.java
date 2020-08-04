@@ -26,8 +26,20 @@ public class Client {
     private String lastName;
 
     @NotEmpty
-    private String cuit;
+    private String dni;
 
     @Enumerated(EnumType.ORDINAL)
     private IvaCondition ivaCondition;
+
+    @NotEmpty
+    private String country;
+
+    @NotEmpty
+    private String state;
+
+    @NotEmpty
+    private String address;
+
+    @NotEmpty
+    private String email;
 }
