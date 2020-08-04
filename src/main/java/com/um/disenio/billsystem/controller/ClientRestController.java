@@ -23,18 +23,29 @@ public class ClientRestController {
         return serviceClientApi.getAll();
     }
 
-    @GetMapping(value = "/find/{id}")
+    @GetMapping(value = "clients/find/{id}")
     public Client getById(@PathVariable Long id) {
         return serviceClientApi.get(id);
     }
 
-    @PostMapping
+    @GetMapping(value = "search")
+    public List<Client> searchClient(@RequestParam String dni){
+        return serviceClientApi.findByDniOrCuitApi(dni);
+    }
+
+    @PutMapping(value = "clients/edit")
+    public ResponseEntity<Client> updateClient(@Valid @RequestBody Client client) {
+        return serviceClientApi.save(client);
+    }
+
+    @PostMapping(value = "clients")
     public ResponseEntity<Client> addClient(@Valid  @RequestBody Client client){
        return serviceClientApi.save(client);
     }
 
-    @PutMapping(value = "delete/{id}")
+    @DeleteMapping(value = "clients/delete/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id){
         return serviceClientApi.delete(id);
     }
+
 }

@@ -10,13 +10,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ServiceProductImpl extends GenericServiceImpl<Product,Long> implements ServiceProductApi {
     @Autowired
     private RepositoryProduct repositoryProduct;
 
     @Override
+    public List<Product> findByIdOrNameApi(Long id, String name) {
+        return repositoryProduct.findByIdOrName(id,name).stream().filter(Product::getActive).collect(Collectors.toList());
+    }
+
+    @Override
     public JpaRepository<Product, Long> getRepository() {
         return repositoryProduct;
     }
+
 }

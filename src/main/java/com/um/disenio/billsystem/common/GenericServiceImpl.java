@@ -44,7 +44,6 @@ public abstract class GenericServiceImpl <T extends Active<ID>, ID extends Seria
                 .stream()
                 .filter(Active::getActive)
                 .collect(Collectors.toList());
-
     }
 
     public  abstract JpaRepository<T,ID> getRepository();
