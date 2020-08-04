@@ -1,9 +1,11 @@
 package com.um.disenio.billsystem.model;
 
+import com.um.disenio.billsystem.common.Active;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 @Setter
 @Getter
@@ -14,7 +16,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "clients")
-public class Client {
+public class Client implements Serializable,Active<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,4 +44,7 @@ public class Client {
 
     @NotEmpty
     private String email;
+
+    @Column(columnDefinition = "tinyint(1) default 1")
+    private Boolean active = true;
 }

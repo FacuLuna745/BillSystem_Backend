@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/v1/product")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(value = "/api/")
 public class ProductRestController {
     @Autowired
     private ServiceProductApi serviceProductApi;
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "product/all")
     public List<Product> getAll(){
         return serviceProductApi.getAll();
     }
@@ -34,7 +35,7 @@ public class ProductRestController {
     @GetMapping(value = "/delete/{id}")
     public ResponseEntity<Product> delete(@PathVariable Long id){
         Product product = serviceProductApi.get(id);
-        if (product != null) {
+        if (product.getActive() == true) {
             serviceProductApi.delete(id);
         }else{
             return new ResponseEntity<Product>(product, HttpStatus.INTERNAL_SERVER_ERROR);

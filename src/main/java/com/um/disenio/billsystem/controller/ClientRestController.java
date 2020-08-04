@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -29,19 +28,13 @@ public class ClientRestController {
         return serviceClientApi.get(id);
     }
 
-    @PostMapping(value = "/create_client")
+    @PostMapping
     public ResponseEntity<Client> addClient(@Valid  @RequestBody Client client){
        return serviceClientApi.save(client);
     }
 
-    @GetMapping(value = "/delete/{id}")
-    public ResponseEntity<Client> delete(@PathVariable Long id){
-        Client client = serviceClientApi.get(id);
-        if (client != null) {
-            serviceClientApi.delete(id);
-        }else{
-            return new ResponseEntity<Client>(client, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<Client>(client,HttpStatus.OK);
+    @PutMapping(value = "delete/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id){
+        return serviceClientApi.delete(id);
     }
 }

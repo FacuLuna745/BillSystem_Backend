@@ -6,6 +6,7 @@ import com.um.disenio.billsystem.model.Product;
 import com.um.disenio.billsystem.repository.RepositoryProduct;
 import com.um.disenio.billsystem.service.api.ServiceProductApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class ServiceProductImpl extends GenericServiceImpl<Product,Long> impleme
     private RepositoryProduct repositoryProduct;
 
     @Override
-    public CrudRepository<Product, Long> getRepository() {
+    public JpaRepository<Product, Long> getRepository() {
         return repositoryProduct;
     }
 }
