@@ -10,10 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,9 +37,9 @@ public class ServiceBillImpl implements ServiceBillApi {
 
     @Override
     public ResponseEntity<Bill> createBill(BillHeader billHeader, List<BillBody> billBody, BillFooter billFooter) {
-        billHeader.setDate(Date.valueOf(LocalDate.now()));
+
         billHeader.setClient(repositoryClient.findById(billHeader.getClient().getId()).orElse(null));
-        billHeader.setTypeBill(billHeader.getClient().getIvaCondition() == IvaCondition.RESPONSABLE_INSCRIPTO ? TypeBill.A : TypeBill.B);//Operacion ternaria
+        billHeader.setTypeBill(billHeader.getClient().getIvaCondition() == IvaCondition.RESPONSABLE_INSCRIPTO ? TypeBill.A : TypeBill.B);
         repositoryBillHeader.save(billHeader);
 
         for(BillBody product:billBody){
@@ -45,18 +49,43 @@ public class ServiceBillImpl implements ServiceBillApi {
             product.setBillHeader(billHeader);
             repositoryBillBody.save(product);
         }
+        billFooter.setDate(Date.valueOf(LocalDate.now()));
+        billFooter.setBills_headers(billHeader);
+        billFooter.setPriceTotal(BigDecimal.valueOf(billBody.stream().map(BillBody::getSubTotal).mapToDouble(BigDecimal::doubleValue).sum()));
+        repositoryBillFooter.save(billFooter);
+
         return new ResponseEntity<>(new Bill(billHeader,billBody,billFooter),HttpStatus.CREATED);
     }
 
     public List<Bill> getAll(){
         ArrayList<Bill> bills = new ArrayList<>();
-
         for (BillHeader billHeader : repositoryBillHeader.findAll()) {
-
             bills.add(0, new Bill(billHeader, billHeader.getBillBodies(), repositoryBillFooter.findById(billHeader.getId()).orElse(null)));
         }
-
         return bills;
     }
 
+    @Override
+    public List<Bill> getBillByClient(Long id) {
+        Client client = repositoryClient.findById(id).get();
+        ArrayList<Bill> bills = new ArrayList<>();
+
+        ArrayList<BillHeader> headers = (ArrayList<BillHeader>) repositoryBillHeader.findAll()
+            .stream().filter(e -> e.getClient().getId().equals(client.getId())).collect(Collectors.toList());
+        for(BillHeader billHeader : headers){
+            bills.add(0,new Bill(billHeader, billHeader.getBillBodies(),repositoryBillFooter.findById(billHeader.getId()).get()));
+        }
+        return bills;
+    }
+
+    @Override
+    public ResponseEntity<Bill> getBillById(Long id) {
+        Bill bill = new Bill();
+
+        bill.setBillHeader(repositoryBillHeader.findById(id).orElse(null));
+        bill.setBodyBill(bill.getBillHeader().getBillBodies());
+        bill.setBillFooter(repositoryBillFooter.findById(id).orElse(null));
+
+        return new ResponseEntity<>(bill,HttpStatus.OK);
+    }
 }

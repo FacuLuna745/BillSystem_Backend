@@ -27,6 +27,7 @@ public class BillBody implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "billHeader_id")
+    @JsonIgnore
     private BillHeader billHeader;
     private BigDecimal quantity;
     private BigDecimal subTotal;

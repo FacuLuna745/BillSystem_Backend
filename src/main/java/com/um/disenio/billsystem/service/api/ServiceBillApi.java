@@ -14,5 +14,6 @@ import java.util.List;
 public interface ServiceBillApi {
     ResponseEntity<Bill> createBill(BillHeader billHeader , List<BillBody> billBody , BillFooter billFooter);
     List<Bill> getAll();
-
+    List<Bill> getBillByClient(Long id);
+    ResponseEntity<Bill> getBillById(Long id);
 }

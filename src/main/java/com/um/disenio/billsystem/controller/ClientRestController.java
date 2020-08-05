@@ -32,7 +32,6 @@ public class ClientRestController {
     public List<Client> searchClient(@RequestParam String dni){
         return serviceClientApi.findByDniOrCuitApi(dni);
     }
-
     @PutMapping(value = "clients/edit")
     public ResponseEntity<Client> updateClient(@Valid @RequestBody Client client) {
         return serviceClientApi.save(client);
@@ -43,7 +42,7 @@ public class ClientRestController {
        return serviceClientApi.save(client);
     }
 
-    @DeleteMapping(value = "clients/delete/{id}")
+    @PutMapping(value = "clients/delete/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id){
         return serviceClientApi.delete(id);
     }

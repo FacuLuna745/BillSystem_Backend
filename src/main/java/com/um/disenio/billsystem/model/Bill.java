@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 
 public class Bill {
-
     private BillHeader billHeader;
     private List<BillBody> bodyBill;
     private BillFooter billFooter;

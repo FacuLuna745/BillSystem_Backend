@@ -2,6 +2,7 @@ package com.um.disenio.billsystem.service.impl;
 
 
 import com.um.disenio.billsystem.common.GenericServiceImpl;
+import com.um.disenio.billsystem.model.Client;
 import com.um.disenio.billsystem.model.Product;
 import com.um.disenio.billsystem.repository.RepositoryProduct;
 import com.um.disenio.billsystem.service.api.ServiceProductApi;
@@ -19,8 +20,8 @@ public class ServiceProductImpl extends GenericServiceImpl<Product,Long> impleme
     private RepositoryProduct repositoryProduct;
 
     @Override
-    public List<Product> findByIdOrNameApi(Long id, String name) {
-        return repositoryProduct.findByIdOrName(id,name).stream().filter(Product::getActive).collect(Collectors.toList());
+    public List<Product> findByNameApi(String name) {
+        return repositoryProduct.findByName(name).stream().filter(Product::getActive).collect(Collectors.toList());
     }
 
     @Override

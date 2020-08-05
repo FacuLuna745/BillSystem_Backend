@@ -9,5 +9,5 @@ import java.util.List;
 
 @Service
 public interface ServiceProductApi  extends GenericServiceApi<Product,Long> {
-    List<Product> findByIdOrNameApi(Long id ,String name);
+    List<Product> findByNameApi(String name);
 }
