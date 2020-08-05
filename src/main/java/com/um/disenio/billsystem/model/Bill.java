@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Bill {
     private BillHeader billHeader;
-    private List<BillBody> bodyBill;
+    private List<BillBody> billBody;
     private BillFooter billFooter;
 
 }

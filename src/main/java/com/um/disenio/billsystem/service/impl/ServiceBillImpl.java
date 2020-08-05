@@ -1,5 +1,6 @@
 package com.um.disenio.billsystem.service.impl;
 
+
 import com.um.disenio.billsystem.model.*;
 import com.um.disenio.billsystem.repository.*;
 import com.um.disenio.billsystem.service.api.ServiceBillApi;
@@ -14,8 +15,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 
 @Service
-public class ServiceBillImpl implements ServiceBillApi {
+public class ServiceBillImpl implements ServiceBillApi  {
     @Autowired
     private RepositoryBillHeader repositoryBillHeader;
     @Autowired
@@ -38,6 +37,7 @@ public class ServiceBillImpl implements ServiceBillApi {
     @Override
     public ResponseEntity<Bill> createBill(BillHeader billHeader, List<BillBody> billBody, BillFooter billFooter) {
 
+        System.out.println(billHeader.getClient().getId());
         billHeader.setClient(repositoryClient.findById(billHeader.getClient().getId()).orElse(null));
         billHeader.setTypeBill(billHeader.getClient().getIvaCondition() == IvaCondition.RESPONSABLE_INSCRIPTO ? TypeBill.A : TypeBill.B);
         repositoryBillHeader.save(billHeader);
@@ -59,8 +59,8 @@ public class ServiceBillImpl implements ServiceBillApi {
 
     public List<Bill> getAll(){
         ArrayList<Bill> bills = new ArrayList<>();
-        for (BillHeader billHeader : repositoryBillHeader.findAll()) {
-            bills.add(0, new Bill(billHeader, billHeader.getBillBodies(), repositoryBillFooter.findById(billHeader.getId()).orElse(null)));
+        for (BillHeader billHeader : repositoryBillHeader.findAll().stream().filter(BillHeader::getActive).collect(Collectors.toList())) {
+            bills.add(0,new Bill(billHeader, billHeader.getBillBodies(), repositoryBillFooter.findById(billHeader.getId()).orElse(null)));
         }
         return bills;
     }
@@ -83,9 +83,22 @@ public class ServiceBillImpl implements ServiceBillApi {
         Bill bill = new Bill();
 
         bill.setBillHeader(repositoryBillHeader.findById(id).orElse(null));
-        bill.setBodyBill(bill.getBillHeader().getBillBodies());
+        bill.setBillBody(bill.getBillHeader().getBillBodies());
         bill.setBillFooter(repositoryBillFooter.findById(id).orElse(null));
 
         return new ResponseEntity<>(bill,HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<HttpStatus> delete(Long id) {
+        if(!repositoryBillHeader.findById(id).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        BillHeader billHeader = repositoryBillHeader.findById(id).get();
+        billHeader.setActive(false);
+        repositoryBillHeader.save(billHeader);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }

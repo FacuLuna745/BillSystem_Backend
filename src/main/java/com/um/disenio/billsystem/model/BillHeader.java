@@ -33,5 +33,8 @@ public class BillHeader implements Serializable {
     @OneToMany(mappedBy = "billHeader")
     @JsonIgnore
     private List<BillBody> billBodies;
+
+    @Column(columnDefinition = "tinyint(1) default 1")
+    private Boolean active = true;
 }
 

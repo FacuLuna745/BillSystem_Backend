@@ -29,7 +29,9 @@ public class BillBody implements Serializable {
     @JoinColumn(name = "billHeader_id")
     @JsonIgnore
     private BillHeader billHeader;
+
     private BigDecimal quantity;
+
     private BigDecimal subTotal;
 
 }

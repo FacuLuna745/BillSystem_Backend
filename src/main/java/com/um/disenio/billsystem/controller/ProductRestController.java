@@ -40,10 +40,11 @@ public class ProductRestController {
         return serviceProductApi.save(product);
     }
 
-    @DeleteMapping(value = "product/delete/{id}")
+    @PutMapping(value = "product/delete/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id){
         return serviceProductApi.delete(id);
     }
+
     @GetMapping(value = "search_product")
     public List<Product> searchProduct(@RequestParam String name){
         return serviceProductApi.findByNameApi(name);

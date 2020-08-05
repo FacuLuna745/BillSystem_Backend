@@ -20,6 +20,7 @@ import java.util.Date;
 public class BillFooter implements Serializable {
 
     @Id
+    @JsonIgnore
     private Long id_Footer;
 
     private Date date;
