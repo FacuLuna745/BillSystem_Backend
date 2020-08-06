@@ -25,7 +25,7 @@ public class ProductRestController {
         return serviceProductApi.getAll();
     }
 
-    @GetMapping(value = "select/{id}")
+    @GetMapping(value = "select_product/{id}")
     public Product getById(@PathVariable Long id){
         return serviceProductApi.get(id);
     }
